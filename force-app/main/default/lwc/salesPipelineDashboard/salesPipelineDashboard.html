@@ -1,0 +1,119 @@
+<template>
+
+    <!-- Dashboard Summary -->
+    <lightning-card title="Sales Pipeline Dashboard" icon-name="standard:opportunity">
+
+        <template if:true={summary}>
+            <div class="slds-grid slds-wrap slds-p-around_medium">
+
+                <div class="slds-col slds-size_1-of-4 slds-p-around_small">
+                    <lightning-card title="Total Opportunities">
+                        <div class="slds-p-around_medium slds-text-heading_large slds-align_absolute-center">
+                            {summary.totalOpportunities}
+                        </div>
+                    </lightning-card>
+                </div>
+
+                <div class="slds-col slds-size_1-of-4 slds-p-around_small">
+                    <lightning-card title="Total Revenue">
+                        <div class="slds-p-around_medium slds-text-heading_large slds-align_absolute-center">
+                            ₹ {summary.totalRevenue}
+                        </div>
+                    </lightning-card>
+                </div>
+
+                <div class="slds-col slds-size_1-of-4 slds-p-around_small">
+                    <lightning-card title="Closed Won">
+                        <div class="slds-p-around_medium slds-text-heading_large slds-align_absolute-center">
+                            {summary.closedWonCount}
+                        </div>
+                    </lightning-card>
+                </div>
+
+                <div class="slds-col slds-size_1-of-4 slds-p-around_small">
+                    <lightning-card title="Won Revenue">
+                        <div class="slds-p-around_medium slds-text-heading_large slds-align_absolute-center">
+                            ₹ {summary.closedWonRevenue}
+                        </div>
+                    </lightning-card>
+                </div>
+
+            </div>
+        </template>
+
+        <template if:true={error}>
+            <div class="slds-text-color_error slds-p-around_medium">
+                {error}
+            </div>
+        </template>
+
+    </lightning-card>
+
+    <br/>
+
+    <!-- Top Opportunities -->
+    <lightning-card title="Top Opportunities">
+
+        <div class="slds-p-around_medium">
+
+            <!-- Search -->
+            <lightning-input
+                type="search"
+                label="Search Opportunity"
+                placeholder="Enter Opportunity Name..."
+                onchange={handleSearch}>
+            </lightning-input>
+
+            <br/>
+
+            <!-- Stage Filter -->
+            <lightning-combobox
+                label="Filter by Stage"
+                placeholder="Select Stage"
+                options={stageOptions}
+                onchange={handleStageChange}>
+            </lightning-combobox>
+
+            <br/>
+
+            <!-- Opportunity Table -->
+            <lightning-datatable
+                key-field="Id"
+                data={opportunities}
+                columns={columns}
+                hide-checkbox-column>
+            </lightning-datatable>
+
+            <!-- Pagination -->
+            <div class="slds-m-top_medium slds-grid slds-grid_align-center slds-grid_vertical-align-center">
+
+                <lightning-button
+                    label="Previous"
+                    variant="neutral"
+                    onclick={previousPage}
+                    disabled={disablePrevious}>
+                </lightning-button>
+
+                <span class="slds-m-horizontal_large slds-text-heading_small">
+                    Page {pageNumber} of {totalPages}
+                </span>
+
+                <lightning-button
+                    label="Next"
+                    variant="brand"
+                    onclick={nextPage}
+                    disabled={disableNext}>
+                </lightning-button>
+
+            </div>
+
+        </div>
+
+    </lightning-card>
+
+    <br/>
+
+    <!-- Revenue Chart -->
+    <c-revenue-chart></c-revenue-chart>
+
+</template>
